@@ -2,7 +2,7 @@
 
 public class PlayerInventoryControl : InventoryUIControl
 {
-    private void Update ()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.I))
         {

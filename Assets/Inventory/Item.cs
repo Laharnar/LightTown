@@ -2,17 +2,23 @@
 
 public class Item : MonoBehaviour
 {
+    new public string name;
     public int width; 
     public int height;
+    public int maxStack;
+    public int stack;
     public Sprite sprite;
+
+    private void Awake()
+    {
+        base.name = name;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         Inventory inv = other.GetComponent<Inventory>();
         if (inv != null)
         {
-            width = Random.Range(1, 3);
-            height = Random.Range(1, 3);
             inv.AddItem(this);
         }
     }

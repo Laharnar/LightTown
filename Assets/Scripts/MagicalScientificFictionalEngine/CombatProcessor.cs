@@ -15,7 +15,7 @@ public class CombatProcessor:MonoBehaviour {
             CombatAction action = actions.Dequeue();
 
             // filter out fixed update actions.
-            if (action.evt.StartsWith("FixedUpdate_") && action.source) {
+            if (action.evt == CombatActionId.FixedUpdate_MoveByDirection && action.source) {
                 ConvertUpdateToFixedUpdateProcessing(action);
                 continue;
             }

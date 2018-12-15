@@ -97,20 +97,24 @@ MonoBehaviour:
   data:
     alliance: 0
     moveSpeed: 3
-    maxHp: 50
-    slashRadius: 1
-    attackRange: 2
+    maxHp: 25
+    ability1_radius: 1
+    ability1_reach: 1
     ability1_dmg: 1
     ai: 0
     ai_atkDistance: 2
   realtime:
-    move: {x: 0, y: 0, z: 0}
+    move: {x: 0, y: 0}
     shouldAttack: 0
     target: {fileID: 0}
     canMove: 0
     curHp: 10
+    lastMove: {x: 0, y: 0}
   unity:
     rig: {fileID: 7740233206684381203}
+  abilityCombatLimits:
+    waitBetweenIssuingAbilities: 1
+    time_waitBetweenIssuingAbilities: 0
 --- !u!50 &7740233206684381203
 Rigidbody2D:
   serializedVersion: 4

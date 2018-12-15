@@ -72,7 +72,11 @@ public class Character01 : MonoBehaviour
             else yield return null;
         }
     }
-
+    private void FixedUpdate() {
+        if (data.ai == false) {
+            unity.rig.MovePosition((Vector2)transform.position + realtime.move * data.moveSpeed * Time.fixedDeltaTime);
+        }
+    }
     // Update is called once per frame
     void Update()
     {
@@ -110,13 +114,15 @@ public class Character01 : MonoBehaviour
                 }*/
             }
         }
-        if (realtime.canMove) {
-            // add move into combat processor too?
-            GameManager.instance.combatProcessor.Add(
-                new CombatAction(CombatActionId.FixedUpdate_MoveByDirection, this, null, 0, realtime.move * data.moveSpeed * Time.fixedDeltaTime));
-        } else {
-            GameManager.instance.combatProcessor.Add(
-                new CombatAction(CombatActionId.FixedUpdate_MoveByDirection, this, null, 0, Vector2.zero));
+        if (data.ai) {
+            if (realtime.canMove) {
+                // add move into combat processor too?
+                GameManager.instance.combatProcessor.Add(
+                    new CombatAction(CombatActionId.FixedUpdate_MoveByDirection, this, null, 0, realtime.move * data.moveSpeed * Time.fixedDeltaTime));
+            } else {
+                GameManager.instance.combatProcessor.Add(
+                    new CombatAction(CombatActionId.FixedUpdate_MoveByDirection, this, null, 0, Vector2.zero));
+            }
         }
     }
 

@@ -99,8 +99,8 @@ MonoBehaviour:
     moveSpeed: 3
     maxHp: 25
     ability1_radius: 1
-    ability1_reach: 1
-    ability1_dmg: 1
+    ability1_reach: 3
+    ability1_dmg: 2
     ai: 0
     ai_atkDistance: 2
   realtime:

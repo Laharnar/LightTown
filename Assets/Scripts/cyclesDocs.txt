@@ -1,4 +1,5 @@
 ﻿Release 1 - hack and slash basics
 dope non animated character with hp and one attack.
 dope non animated enemy with ai, hp and one attack.
-
+movement. ok
+attacking.

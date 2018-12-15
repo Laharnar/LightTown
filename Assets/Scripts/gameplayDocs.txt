@@ -1,1 +1,5 @@
-﻿
+﻿few ideas on combining:
+combining skills with numbers.
+picking skills based on position you are standing.
+combining skills or combo with an ally.
+combining primal elements in forge-like to get skills out.

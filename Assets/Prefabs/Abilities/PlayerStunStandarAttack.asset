@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84bf76fc93d20be488875e0aa4350778, type: 3}
+  m_Name: PlayerStunStandarAttack
+  m_EditorClassIdentifier: 
+  evt:
+    ability1_radius: 1
+    ability1_reach: 1
+    ability1_dmg: 1
+  stunId: 0
+  stun:
+    stunLength: 3
+  childAction: {fileID: 11400000, guid: c3397ee91fba2cf4a8bfd480e0b8da45, type: 2}

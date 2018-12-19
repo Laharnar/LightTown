@@ -1,18 +1,26 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+[System.Serializable]
+public class AbilityData {
+    public bool avaliable = true;
+    public float ability1_radius = 1;
+    public float ability1_reachDistance = 1;
+    public int ability1_dmg = 1;
 
+    public float rangeLimit=1;
+    public Stun stun;
+
+}
 [System.Serializable]
 public class CharacterData {
     public int alliance = 0;
     public float moveSpeed = 1;
     public int maxHp = 10;
 
-    [Header("Abilities")]
-    public float ability1_radius = 1;
-    public float ability1_reach = 1;
-    public int ability1_dmg = 1;
+    [HideInInspector]public AbilityData[] abilities;
 
     [Header("AI")]
     public bool ai = false;
@@ -35,13 +43,7 @@ public class RTCharacterData {
 [System.Serializable]
 public class UnityData {
     public Rigidbody2D rig;
-}
-[System.Serializable]
-public class ProcessingLimits {
-    public float waitBetweenIssuingAbilities = 1;
 
-    public float time_waitBetweenIssuingAbilities=0;
-    internal bool ready;
 }
 public class Character01 : MonoBehaviour
 {
@@ -51,22 +53,33 @@ public class Character01 : MonoBehaviour
 
     // exprimental
     public ProcessingLimits abilityCombatLimits;
+    private int activeAbility = 0;
+    [SerializeField] internal List<DecoratorHolder> abilities = new List<DecoratorHolder>();
 
     private void Start() {
+        // loading abilities
+        data.abilities = new AbilityData[abilities.Count];
+        for (int i = 0; i < abilities.Count; i++) {
+            data.abilities[i] = abilities[i].evt;
+        }
+
+        // init
         realtime.Init(data);
 
         GameAI.RegisterUnit(this);
 
         // experimental.
-        StartCoroutine(AILimits());
+        StartCoroutine(CharacterLimits());
     }
 
     // experimental.
-    private IEnumerator AILimits() {
+    private IEnumerator CharacterLimits() {
         while (true) {
             if (abilityCombatLimits.waitBetweenIssuingAbilities > 0) {
-                yield return new WaitForSeconds(abilityCombatLimits.waitBetweenIssuingAbilities);
-                abilityCombatLimits.time_waitBetweenIssuingAbilities = Time.deltaTime;
+                yield return new WaitForSeconds(abilityCombatLimits.waitBetweenIssuingAbilities
+                    + abilityCombatLimits.waitStun);
+                abilityCombatLimits.time_waitBetweenIssuingAbilities = Time.time;
+                abilityCombatLimits.waitStun = 0;
                 abilityCombatLimits.ready = true;
             }
             else yield return null;
@@ -97,13 +110,18 @@ public class Character01 : MonoBehaviour
     void Action(Vector2 dir, bool attack) {
         if (attack ) {
             if (abilityCombatLimits.ready) {
-                RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, data.ability1_radius, realtime.lastMove, data.ability1_reach);
+                int abilityId = 0;
+                RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, data.abilities[abilityId].ability1_radius, realtime.lastMove, data.abilities[abilityId].ability1_reachDistance);
                 //Debug.Log("Attempting atk "+hits.Length);
                 // use event processor?
+                int atkId = this.activeAbility;
                 for (int i = 0; i < hits.Length; i++) {
-                    if (hits[i].transform.root != transform.root) {
-                        GameManager.instance.combatProcessor.Add(new CombatAction(CombatActionId.DamageHostilesAttempt_CastCollision , this, hits[i].transform.GetComponent<Character01>(),
-                            0, Vector2.zero));// active ability
+                    if (hits[i].transform.root != transform.root) { // rebuild combat adding pipeline
+                        GameManager.instance.combatProcessor.Add(
+                            new CombatAction(CombatActionId.DamageHostilesAttempt_CastCollision, this, hits[i].transform.GetComponent<Character01>(),
+                                atkId, Vector2.zero)
+                            
+                            );// active ability
                     }
                 }
                 abilityCombatLimits.ready = false;
@@ -160,12 +178,16 @@ public class Character01 : MonoBehaviour
             realtime.move = target - (Vector2)transform.position;
             realtime.target = unitTarget.transform;
 
-            if (Vector2.Distance(transform.position, target) < data.ai_atkDistance) {
-                realtime.shouldAttack = true;
-                realtime.canMove = false;
-            }
+            CheckForAbility(target, data.abilities[0]);
 
             realtime.lastMove = realtime.move;
+        }
+    }
+
+    void CheckForAbility(Vector2 targetPos, AbilityData ability) {
+        if (Vector2.Distance(transform.position, targetPos) < ability.rangeLimit) {
+            realtime.shouldAttack = true;
+            realtime.canMove = false;
         }
     }
 
@@ -182,4 +204,5 @@ public class Character01 : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
 }

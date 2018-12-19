@@ -67,21 +67,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2391812369390822566, guid: 5b792491bace22d47bd4ea668ddc7cb6,
-        type: 3}
-      propertyPath: m_Color.r
-      value: 0.095341444
-      objectReference: {fileID: 0}
-    - target: {fileID: 2391812369390822566, guid: 5b792491bace22d47bd4ea668ddc7cb6,
-        type: 3}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2391812369390822566, guid: 5b792491bace22d47bd4ea668ddc7cb6,
-        type: 3}
-      propertyPath: m_Color.b
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2391812369390822567, guid: 5b792491bace22d47bd4ea668ddc7cb6,
         type: 3}
       propertyPath: data.moveSpeed
@@ -106,6 +91,27 @@ PrefabInstance:
         type: 3}
       propertyPath: data.maxHp
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2391812369390822567, guid: 5b792491bace22d47bd4ea668ddc7cb6,
+        type: 3}
+      propertyPath: abilities.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: c972f194661a6d444940317af455cf1f,
+        type: 2}
+    - target: {fileID: 2391812369390822566, guid: 5b792491bace22d47bd4ea668ddc7cb6,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.095341444
+      objectReference: {fileID: 0}
+    - target: {fileID: 2391812369390822566, guid: 5b792491bace22d47bd4ea668ddc7cb6,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2391812369390822566, guid: 5b792491bace22d47bd4ea668ddc7cb6,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b792491bace22d47bd4ea668ddc7cb6, type: 3}

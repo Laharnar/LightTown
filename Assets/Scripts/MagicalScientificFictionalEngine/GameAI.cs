@@ -1,22 +1,22 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class GameAI  {
-    public static GameAI instance;
+public class GameAI {
+    public static GameAI Instance;
 
-    public List<Character01> units = new List<Character01>();
+    public List<Character01> Units = new List<Character01>();
 
     public GameAI() {
-        if (instance == null)
-            instance = this;
+        if (Instance == null)
+            Instance = this;
         else Debug.Log("Singleton exists. - GameAI");
     }
 
     public static void RegisterUnit(Character01 unit) {
-        instance.units.Add(unit);
+        Instance.Units.Add(unit);
     }
     public static void DestroyUnit(Character01 unit) {
-        instance.units.Remove(unit);
+        Instance.Units.Remove(unit);
     }
     /// <summary>
     /// Skips units on same postions as parameter.
@@ -25,7 +25,7 @@ public class GameAI  {
     /// <param name="alliance"></param>
     /// <returns></returns>
     internal static Character01 FindUnit(Vector2 position, int alliance) {
-        List<Character01> units = instance.units;
+        List<Character01> units = Instance.Units;
         float minDist = float.MaxValue;
         int minI = -1;
         for (int i = 0; i < units.Count; i++) {

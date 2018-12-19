@@ -1,5 +1,46 @@
-﻿Release 1 - hack and slash basics
+﻿Cycle 1 - hack and slash basics
 dope non animated character with hp and one attack.
 dope non animated enemy with ai, hp and one attack.
 movement. ok
-attacking.
+attacking. ok
+
+results: enemies can basically wipe you out when they group. ally feels cool.
+currenty you cannot kite enemies, because attacks happen towards where you are facing.
+suggestions: slow down enemies - slow ai attacking start. stunned when hit.
+
+
+Cycle 2 - experiment with abilities and ai. basic ui messaging.
+stun.
+archer ally. long range. insta shot.
+ally dog. stun ability.
+more enemies.
+stun attribute for ability. stun on hit. player is stunned less.
+get basic ui messages out above units. text based.
+
+
+skopiraj certifikat na svoj strežnik na arnesu. konektaj prek passworda na učilnici.
+2.3 namesšanje certifikata - pretvorimo naš signet cert+
+
+// aktivacija certifikata za 1 dan, da se lahko pošilja na gručo
+arcproxy $fri.vo.sling.si
+
+run with putty.
+
+// kaj naj se zažene
+arcsub -c jost.arnes.si mpi_test.xrsl
+ta mpi_test scripta je bash... noter damo našo skripto
+few things: where to debug. we need to load it from server
+
+delaj na lokalni mpi, potem pa še zaženi na strežniku.
+using bash on server.
+cat file.smth
+
+cert na enega od računov. ga pretvori z unimi 3 ukazi. naredi arcproxy. prirpavi naš program in opisno datoteko ki se jo požene.
+
+seminarska.....
+je tudi v knjigi. rezanje šivov. rezamo sliko da je ne spreenimo preveč
+detekcija robov. potem šive iskat, računanje kumulativ(vsota pi, katere črte pixlov vn.
+kumulative: prištej minimum v naslednji vrstici.
+
+import that sigenca certificat. then select mail.
+

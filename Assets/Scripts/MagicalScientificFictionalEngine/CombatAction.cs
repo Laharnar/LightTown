@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+/// <summary>
+/// Which type of action is it. Used at processing.
+/// </summary>
 public enum CombatActionId {
     Damage,
     DamageAttempt_CastCollision,
@@ -6,7 +10,8 @@ public enum CombatActionId {
     DamageHostiles,
     FixedUpdate_MoveByDirection
 }
-public class CombatAction {
+
+public class CombatAction : IDecorator {
 
     public CombatActionId evt;
     public Character01 source;
@@ -20,5 +25,10 @@ public class CombatAction {
         this.target = target;
         this.abilityId = abilityId;
         this.direction = direction;
+    }
+
+    public override CombatAction ActivateAbility() {
+        CombatProcessing.ProcessAction(this);
+        return this;
     }
 }

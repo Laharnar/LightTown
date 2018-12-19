@@ -10,8 +10,8 @@ public static class CombatProcessing {
         }
         if (e.evt == CombatActionId.Damage) {
             if (e.target) {
-                Debug.Log("Applying dmg from " + e.source + " to " + e.target+" w amt "+e.source.data.ability1_dmg);
-                e.target.Damage(e.source.data.ability1_dmg);
+                Debug.Log("Applying dmg from " + e.source + " to " + e.target+" w amt "+e.source.data.abilities[e.abilityId].ability1_dmg);
+                e.target.Damage(e.source.data.abilities[e.abilityId].ability1_dmg);
             }
         }
 
@@ -21,8 +21,8 @@ public static class CombatProcessing {
         }
         if (e.evt == CombatActionId.DamageHostiles) {
             if (e.target && e.source.data.alliance != e.target.data.alliance) {
-                Debug.Log("Applying dmg from " + e.source + " to " + e.target + " w amt " + e.source.data.ability1_dmg);
-                e.target.Damage(e.source.data.ability1_dmg);
+                Debug.Log("Applying dmg from " + e.source + " to " + e.target + " w amt " + e.source.data.abilities[e.abilityId].ability1_dmg);
+                e.target.Damage(e.source.data.abilities[e.abilityId].ability1_dmg);
             }
         }
     }

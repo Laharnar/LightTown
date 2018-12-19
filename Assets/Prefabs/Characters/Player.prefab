@@ -98,9 +98,7 @@ MonoBehaviour:
     alliance: 0
     moveSpeed: 3
     maxHp: 25
-    ability1_radius: 1
-    ability1_reach: 3
-    ability1_dmg: 2
+    abilities: []
     ai: 0
     ai_atkDistance: 2
   realtime:
@@ -115,6 +113,9 @@ MonoBehaviour:
   abilityCombatLimits:
     waitBetweenIssuingAbilities: 1
     time_waitBetweenIssuingAbilities: 0
+    waitStun: 0
+  abilities:
+  - {fileID: 11400000, guid: c3397ee91fba2cf4a8bfd480e0b8da45, type: 2}
 --- !u!50 &7740233206684381203
 Rigidbody2D:
   serializedVersion: 4

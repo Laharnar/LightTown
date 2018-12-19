@@ -3,24 +3,25 @@ using UnityEngine;
 
 public class CombatProcessor:MonoBehaviour {
 
-    Queue<CombatAction> actions = new Queue<CombatAction>();
-    Dictionary<Transform, CombatAction> fixUpdateActions = new Dictionary<Transform, CombatAction>();
+    Queue<IDecorator> actions = new Queue<IDecorator>();
+    Dictionary<Transform, IDecorator> fixUpdateActions = new Dictionary<Transform, IDecorator>();
 
-    public void Add(CombatAction combatAction) {
+    public void Add(IDecorator combatAction) {
         actions.Enqueue(combatAction);
     }
 
     void Update() {
         while (actions.Count > 0) {
-            CombatAction action = actions.Dequeue();
-
+            IDecorator ability = actions.Dequeue();
+            CombatAction action = ability as CombatAction;
             // filter out fixed update actions.
-            if (action.evt == CombatActionId.FixedUpdate_MoveByDirection && action.source) {
+            if (action!= null && action.evt == CombatActionId.FixedUpdate_MoveByDirection && action.source) {
                 ConvertUpdateToFixedUpdateProcessing(action);
                 continue;
             }
 
-            CombatProcessing.ProcessAction(action);
+            action.source.abilities[action.abilityId].AddAttributes(ability);
+            ability.ActivateAbility();
 
         }
     }
@@ -37,7 +38,7 @@ public class CombatProcessor:MonoBehaviour {
     private void FixedUpdate() {
         foreach (var item in fixUpdateActions) {
             if (item.Value!= null) {
-                CombatProcessing.ProcessPhysicsAction(item.Value);
+                CombatProcessing.ProcessPhysicsAction(item.Value as CombatAction);
 
                 //fixUpdateActions[item.Key] = null;
             }

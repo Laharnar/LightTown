@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: PlayerStandardAttack
   m_EditorClassIdentifier: 
   evt:
+    avaliable: 1
     ability1_radius: 1
-    ability1_reach: 2
+    ability1_reachDistance: 1
     ability1_dmg: 2
-  stunId: -1
-  stun:
-    stunLength: 0
+    rangeLimit: 3
+    stun:
+      stunLength: 3
+  stunId: 0
   childAction: {fileID: 0}

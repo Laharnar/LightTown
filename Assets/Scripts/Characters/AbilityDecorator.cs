@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 [System.Serializable]
 public abstract class IDecorator {
+
     public abstract CombatAction ActivateAbility();
 }
 [System.Serializable]

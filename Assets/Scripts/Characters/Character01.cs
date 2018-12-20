@@ -34,6 +34,7 @@ public class RTCharacterData {
     public bool canMove;
     public int curHp = 10;
     public Vector2 lastMove;
+    public bool isStunned;
 
     public void Init(CharacterData data) {
         curHp = data.maxHp;
@@ -76,13 +77,18 @@ public class Character01 : MonoBehaviour
     private IEnumerator CharacterLimits() {
         while (true) {
             if (abilityCombatLimits.waitBetweenIssuingAbilities > 0) {
-                yield return new WaitForSeconds(abilityCombatLimits.waitBetweenIssuingAbilities
-                    + abilityCombatLimits.waitStun);
+                yield return new WaitForSeconds(abilityCombatLimits.waitBetweenIssuingAbilities);
+                if (abilityCombatLimits.waitStun > 0) {
+                    Debug.Log("waiting stun ou t ");
+                    realtime.isStunned = false;
+                    yield return new WaitForSeconds(abilityCombatLimits.waitStun);
+                    realtime.isStunned = true;
+                }
                 abilityCombatLimits.time_waitBetweenIssuingAbilities = Time.time;
                 abilityCombatLimits.waitStun = 0;
                 abilityCombatLimits.ready = true;
-            }
-            else yield return null;
+
+            } else yield return null;
         }
     }
     private void FixedUpdate() {
@@ -120,7 +126,6 @@ public class Character01 : MonoBehaviour
                         GameManager.instance.combatProcessor.Add(
                             new CombatAction(CombatActionId.DamageHostilesAttempt_CastCollision, this, hits[i].transform.GetComponent<Character01>(),
                                 atkId, Vector2.zero)
-                            
                             );// active ability
                     }
                 }
@@ -133,13 +138,13 @@ public class Character01 : MonoBehaviour
             }
         }
         if (data.ai) {
-            if (realtime.canMove) {
+            if (realtime.canMove && !realtime.isStunned) {
                 // add move into combat processor too?
                 GameManager.instance.combatProcessor.Add(
-                    new CombatAction(CombatActionId.FixedUpdate_MoveByDirection, this, null, 0, realtime.move * data.moveSpeed * Time.fixedDeltaTime));
+                    new CombatAction(CombatActionId.FixedUpdate_MoveByDirection, this, null, -1, realtime.move * data.moveSpeed * Time.fixedDeltaTime));
             } else {
                 GameManager.instance.combatProcessor.Add(
-                    new CombatAction(CombatActionId.FixedUpdate_MoveByDirection, this, null, 0, Vector2.zero));
+                    new CombatAction(CombatActionId.FixedUpdate_MoveByDirection, this, null, -1, Vector2.zero));
             }
         }
     }

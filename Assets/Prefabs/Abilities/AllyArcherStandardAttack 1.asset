@@ -10,13 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 84bf76fc93d20be488875e0aa4350778, type: 3}
-  m_Name: PlayerStandardAttack
+  m_Name: AllyArcherStandardAttack 1
   m_EditorClassIdentifier: 
   evt:
-    ability1_radius: 1
-    ability1_reach: 2
-    ability1_dmg: 2
-  stunId: -1
-  stun:
-    stunLength: 0
+    avaliable: 1
+    ability1_radius: 0.2
+    ability1_reachDistance: 1
+    ability1_dmg: 1
+    rangeLimit: 7
+    stun:
+      stunLength: 1
+  stunId: 0
   childAction: {fileID: 0}

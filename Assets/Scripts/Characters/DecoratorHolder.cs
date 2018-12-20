@@ -7,6 +7,7 @@ public class DecoratorHolder:ScriptableObject {
     public ScriptableObject childAction;
 
     public IDecorator AddAttributes(IDecorator action) {
+        Debug.Log("applyin stun attribute");
         if (stunId > -1)
             return new Stun(evt.stun, action);
         return action;

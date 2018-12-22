@@ -20,5 +20,5 @@ MonoBehaviour:
     rangeLimit: 2
     stun:
       stunLength: 0.1
-  stunId: -1
+  stunId: 0
   childAction: {fileID: 0}

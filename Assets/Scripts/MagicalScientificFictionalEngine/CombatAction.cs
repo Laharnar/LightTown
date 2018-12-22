@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 /// <summary>
 /// Which type of action is it. Used at processing.
@@ -10,14 +11,24 @@ public enum CombatActionId {
     DamageHostiles,
     FixedUpdate_MoveByDirection
 }
-
+/// <summary>
+/// Combat actions are constructed based on the whole chain.
+/// </summary>
 public class CombatAction : IDecorator {
 
     public CombatActionId evt;
+
     public Character01 source;
     public Character01 target;
+
+    [System.Obsolete("use something else")]
     public int abilityId;
     public Vector3 direction;
+
+    public CombatAction(Character01 source, Character01 target) {
+        this.source = source;
+        this.target = target;
+    }
 
     public CombatAction(CombatActionId evt, Character01 source, Character01 target, int abilityId, Vector3 direction) {
         this.evt = evt;
@@ -25,10 +36,5 @@ public class CombatAction : IDecorator {
         this.target = target;
         this.abilityId = abilityId;
         this.direction = direction;
-    }
-
-    public override CombatAction ActivateAbility() {
-        CombatProcessing.ProcessAction(this);
-        return this;
     }
 }

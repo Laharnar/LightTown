@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+[System.Obsolete("Abandoned in favor of local handling.")]
 public class CombatProcessor:MonoBehaviour {
 
     Queue<IDecorator> actions = new Queue<IDecorator>();
@@ -11,19 +12,22 @@ public class CombatProcessor:MonoBehaviour {
     }
 
     void Update() {
+        // not used
+
         while (actions.Count > 0) {
             IDecorator ability = actions.Dequeue();
             CombatAction action = ability as CombatAction;
-            if (action.abilityId > -1)
-                ability = action.source.abilities[action.abilityId].AddAttributes(ability);
-            Debug.Log("ability " + ability.GetType());
+            //if (action.abilityId > -1)
+                //ability = action.source.abilities[action.abilityId].AddAttributes(ability);
             // filter out fixed update actions.
             if (ability != null && action.evt == CombatActionId.FixedUpdate_MoveByDirection && action.source) {
                 ConvertUpdateToFixedUpdateProcessing(action, ability);
                 continue;
             }
+            Debug.Log("ability " + ability.GetType() + " " + action.source + " " + action.target);
 
-            ability.ActivateAbility();
+            CombatProcessing.ProcessAction(action);
+            //ability.ActivateAbility();
 
         }
     }

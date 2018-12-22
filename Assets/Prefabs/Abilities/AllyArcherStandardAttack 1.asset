@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   evt:
     avaliable: 1
-    ability1_radius: 0.2
+    ability1_radius: 1
     ability1_reachDistance: 1
     ability1_dmg: 1
     rangeLimit: 7

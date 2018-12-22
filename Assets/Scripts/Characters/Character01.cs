@@ -40,6 +40,7 @@ public class RTCharacterData {
     // experimental - cycle 2
     // separated handling of when abilities are activated and when they end.
     public Dictionary<Character01, Coroutine> lastActivatedAbility = new Dictionary<Character01, Coroutine>();
+    public string msg;
 
     public void Init(CharacterData data) {
         curHp = data.maxHp;
@@ -168,7 +169,7 @@ public class Character01 : MonoBehaviour
         rt.move.Normalize();
         Action(rt.move, rt.shouldAttack);
 
-        
+        unity.UpdateCombatMsg(rt);   
     }
 
     void Action(Vector2 dir, bool attack) {
@@ -274,6 +275,7 @@ public class Character01 : MonoBehaviour
     }
     #region STATUSES
     public void Damaged(CombatAction a, int value) {
+        a.target.rt.msg = ("-" + value+" "+Time.time);
         a.target.Damage(value);
     }
 

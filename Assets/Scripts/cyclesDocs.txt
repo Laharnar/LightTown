@@ -10,19 +10,20 @@ suggestions: slow down enemies - slow ai attacking start. stunned when hit.
 
 
 Cycle 2 - experiment with abilities and ai. basic ui messaging.
-stun.
-archer ally. long range. insta shot.
+stun. - ok
+archer ally. long range. insta shot. - ok
 ally dog. stun ability.
 more enemies.
 stun attribute for ability. stun on hit. player is stunned less.
+
 get basic ui messages out above units. text based.
 
-ability system
-best might be to handle everything locally, just have the final check allow to happen on processor.
-combat action is what processor takes care of.  it's move, ability or whatever decision ai or user can make.
-where to handle cooldowns on abilities and where to handle ai delays?
-it allows handling of delays.
+results: dog can tank everything, and it becomes boring to watch them diss it out in melee.
 
+(Cycle 2)ability system
+combat action is handled by combat processor.  <atm only damage and move> it's move, ability or whatever decision ai or user can make.
+where to handle cooldowns on abilities and where to handle ai delays? << locally.
+Solution 22.12.18: effects like stuns, animations, and waiting are handled locally. damage and movement are handled globally.
 
 skopiraj certifikat na svoj strežnik na arnesu. konektaj prek passworda na učilnici.
 2.3 namesšanje certifikata - pretvorimo naš signet cert+

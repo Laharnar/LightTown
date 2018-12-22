@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 84bf76fc93d20be488875e0aa4350778, type: 3}
-  m_Name: AllyArcherStandardAttack 1
+  m_Name: ArcherStandardAttack
   m_EditorClassIdentifier: 
   evt:
+    abilityName: Snipe
     avaliable: 1
-    ability1_radius: 1
-    ability1_reachDistance: 1
+    ability1_radius: 2
     ability1_dmg: 1
     rangeLimit: 7
     stun:

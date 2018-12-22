@@ -21,7 +21,6 @@ public class CombatAction : IDecorator {
     public Character01 source;
     public Character01 target;
 
-    [System.Obsolete("use something else")]
     public int abilityId;
     public Vector3 direction;
 

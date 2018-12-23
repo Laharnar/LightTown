@@ -99,6 +99,8 @@ MonoBehaviour:
     alliance: 0
     moveSpeed: 3
     maxHp: 25
+    abilityTree:
+      items: []
     ai: 0
   rt:
     move: {x: 0, y: 0}
@@ -108,15 +110,21 @@ MonoBehaviour:
     curHp: 10
     lastMove: {x: 0, y: 0}
     isStunned: 0
-    msg: 
+    activeAbility: 0
+    lastAbilityId: 0
+    combatUiMsg: 
   unity:
     rig: {fileID: 7740233206684381203}
     combatMessages: {fileID: 2930432154600341373}
   combatLimits:
     delayAfterAttacking: 1
     waitStun: 0
-  abilities:
-  - {fileID: 11400000, guid: c3397ee91fba2cf4a8bfd480e0b8da45, type: 2}
+  prefs:
+    abilities:
+    - {fileID: 11400000, guid: c3397ee91fba2cf4a8bfd480e0b8da45, type: 2}
+    - {fileID: 11400000, guid: 98036f7c4cc92bc40b0968ddc3be59a2, type: 2}
+    - {fileID: 11400000, guid: 530b79f9b5d5ecd4d8c607c29246b1b9, type: 2}
+    tree: {fileID: 11400000, guid: 57fd7179f396ac343931a740d8c40898, type: 2}
 --- !u!50 &7740233206684381203
 Rigidbody2D:
   serializedVersion: 4

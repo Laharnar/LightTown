@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-
 // stack is untested, but should work in theory.
 [CreateAssetMenu(fileName = "AbilityDecorator", menuName = "Ability systems/AbilityDecorator", order = 1)]
 public class DecoratorHolder:ScriptableObject {

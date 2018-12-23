@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 84bf76fc93d20be488875e0aa4350778, type: 3}
-  m_Name: PlayerStandardAttack
+  m_Name: PlayerStandardAttack 1
   m_EditorClassIdentifier: 
   evt:
-    abilityName: PlayerCombo1
-    abilityTag: Basic1
+    abilityName: PlayerCombo2
+    abilityTag: Basic2
     avaliable: 1
     ability1_radius: 1
     ability1_dmg: 2
@@ -23,6 +23,6 @@ MonoBehaviour:
       stunLength: 3
     condition:
       priorRequiredAbilities:
-      - None
+      - PlayerCombo1
   stunId: 0
   childAction: {fileID: 0}

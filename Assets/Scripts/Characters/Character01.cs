@@ -6,6 +6,7 @@ using UnityEngine;
 [System.Serializable]
 public class AbilityData {
     public string abilityName = "Unnamed";
+    public string abilityTag = "UndefinedTag";
     public bool avaliable = true;
     public float ability1_radius = 1;
     public int ability1_dmg = 1;
@@ -13,7 +14,69 @@ public class AbilityData {
     public float rangeLimit=1;
     public Stun stun;
 
+    // TODO: implement.
+    public bool useDelay = false;
+    public float delayAfterAttack = 1f;
+
+    /// <summary>
+    /// What has to be true for ability to activate.
+    /// </summary>
+    /// <remarks>Condition is take only for the last(base) item in chain.</remarks>
+    public AbilityCondition condition;
     
+}
+[System.Serializable]
+public class AbilityComboItem {
+    public string tag = "Undefined";
+    public string[] next;
+    public AbilityCondition[] conditions;
+    internal string Default { get { return next[0]; } }
+
+    public int NumOfPaths { get { return next.Length - 1; } }
+
+    internal string Get(int i) {
+        return i < next.Length ? next[i] : "Out of range err." ;
+    }
+
+    internal bool ConditionPass(int i) {
+        return true;
+    }
+}
+[System.Serializable]
+public class AbilityComboTree {
+    public AbilityComboItem[] items;
+
+    public string GetTagOfNextAbility(LinkedList<AbilityData> curItem) {
+        bool firstAvaliable = true; // true: pick first avaliable. false: last avaliable.
+        AbilityData data = curItem.Last.Value;
+        AbilityComboItem item = GetComboItemByTag(data.abilityTag);
+        if (item!= null) {
+            // pick next
+            string next = item.Default;
+            for (int i = 0; i < item.NumOfPaths; i++) {
+                if (item.ConditionPass(i)) {
+                    next = item.Get(i);
+                    if (firstAvaliable) {
+                        break;
+                    }
+                }
+            }
+            Debug.Log("gettin tag "+next);
+            return next;
+        } else {
+            Debug.Log("Ability item for combos, doesn't exist. "+data.abilityName);
+        }
+        return "Failed to choose";
+    }
+
+    private AbilityComboItem GetComboItemByTag(string abilityTag) {
+        for (int i = 0; i < items.Length; i++) {
+            if (items[i].tag == abilityTag) {
+                return items[i];
+            }
+        }
+        return null;
+    }
 }
 [System.Serializable]
 public class CharacterData {
@@ -23,9 +86,23 @@ public class CharacterData {
 
     // expeimental cycle 2. saved from prefabs
     public LinkedList<AbilityData>[] abilities;
+    // expermental - cycle 3
+    // which abilities lead where, + ability state.
+    // don't change values in tree directly.
+    public AbilityComboTree abilityTree;
 
     [Header("AI")]
     public bool ai = false;
+
+    internal int GetAbilityByName(string tag) {
+        for (int i = 0; i < abilityTree.items.Length; i++) {
+            if (abilityTree.items[i].tag == tag) {
+                return i;
+            }
+        }
+        Debug.Log("Ability with NAME doesn exist. "+tag);
+        return -1;
+    }
 }
 [System.Serializable]
 public class RTCharacterData {
@@ -36,11 +113,15 @@ public class RTCharacterData {
     public int curHp = 10;
     public Vector2 lastMove;
     public int isStunned;
+    public int activeAbility = 0;
+    public int lastAbilityId;
+    public LinkedList<AbilityData> lastAbility;
 
     // experimental - cycle 2
     // separated handling of when abilities are activated and when they end.
     public Dictionary<Character01, Coroutine> lastActivatedAbility = new Dictionary<Character01, Coroutine>();
-    public string msg;
+
+    public string combatUiMsg;
 
     public void Init(CharacterData data) {
         curHp = data.maxHp;
@@ -48,18 +129,18 @@ public class RTCharacterData {
     }
 
     // experimental - cycle 2
-    // doesn't support movement.
-    public bool RecordAbility(Character01 character, LinkedList<AbilityData> data, CombatAction action) {
+    public bool RecordAbilityHit(Character01 character, LinkedList<AbilityData> data, CombatAction action) {
         if (character == null || data == null) {
             Debug.Log("Null data."); return false;
         }
         if (!lastActivatedAbility.ContainsKey(character)) {
             lastActivatedAbility.Add(character, null);
         }
-        if (lastActivatedAbility[character] == null) {
+        //if (lastActivatedAbility[character] == null) {
+            Debug.Log("Actitivating ability on character. against target. "+character.name +"; "+ data.Last.Value.abilityName+"; "+ action.target.name);
             lastActivatedAbility[character] = character.StartCoroutine(character.AbilityCycle(data, action));
             return true;
-        }
+        //}
         return false;
     }
 
@@ -67,7 +148,12 @@ public class RTCharacterData {
         lastActivatedAbility[character] = null;
     }
 }
+[System.Serializable]
+public class CharacterPrefabsLoad {
+    [SerializeField] internal List<ScriptableObject> abilities = new List<ScriptableObject>();
 
+    public AbilityTreeSetup tree;
+}
 public class Character01 : MonoBehaviour
 {
     public CharacterData data;
@@ -79,30 +165,35 @@ public class Character01 : MonoBehaviour
 
     // exprimental
     public ProcessingLimits combatLimits;
-    private int activeAbility = 0;
-    [SerializeField] internal List<DecoratorHolder> abilities = new List<DecoratorHolder>();
-
-    // experimental, cycle 2 - status
-    Coroutine status;
+    public CharacterPrefabsLoad prefs;
 
     private void Start() {
-        // loading abilities
-        data.abilities = new LinkedList<AbilityData>[abilities.Count];
-        for (int i = 0; i < abilities.Count; i++) {
-            data.abilities[i] = DecoratorHolder.ConstructAbilityStack(abilities[i]);//.evt
-        }
+        LoadAbilities();
+        LoadTree();
 
         // init
         rt.Init(data);
 
         GameAI.RegisterUnit(this);
 
-        // experimental.
         GameManager.instance.StartCoroutine(CharacterLimits());
     }
+
+    private void LoadAbilities() {
+        // load abilities into list
+        data.abilities = new LinkedList<AbilityData>[prefs.abilities.Count];
+        for (int i = 0; i < prefs.abilities.Count; i++) {
+            data.abilities[i] = DecoratorHolder.ConstructAbilityStack((DecoratorHolder)prefs.abilities[i]);//.evt
+        }
+    }
+
+    private void LoadTree() {
+        data.abilityTree = prefs.tree.tree;
+    }
+
     // experimental 2 - cycle 2.
     /// <summary>
-    /// Wait out single ability.
+    /// Wait out single ability, over single target
     /// </summary>
     /// <param name="ability"></param>
     /// <returns></returns>
@@ -130,12 +221,15 @@ public class Character01 : MonoBehaviour
     }
 
 
-    // experimental.
+    /// <summary>
+    /// handles delays between attacks
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator CharacterLimits() {
         while (true) {
-            if (combatLimits.delayAfterAttacking > 0) {
+            if (combatLimits.delayAfterAttacking > 0 && !combatLimits.ready) {
                 yield return new WaitForSeconds(combatLimits.delayAfterAttacking);
-
+                Debug.Log("ready to attack.");
                 // pick attack.
                 /*if (combatLimits.waitStun > 0) {
                     Debug.Log("waiting stun ou t ");
@@ -175,15 +269,18 @@ public class Character01 : MonoBehaviour
     void Action(Vector2 dir, bool attack) {
         if (attack) {
             if (combatLimits.ready) {
-                int abilityId = 0;
-                RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, data.abilities[abilityId].Last.Value.ability1_radius, rt.lastMove, data.abilities[abilityId].Last.Value.rangeLimit);
+                RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, 
+                    data.abilities[rt.activeAbility].Last.Value.ability1_radius, rt.lastMove, 
+                    data.abilities[rt.activeAbility].Last.Value.rangeLimit);
                 //Debug.Log("Attempting atk "+hits.Length);
                 // use event processor?
-                BeginNewAbility(this.activeAbility, hits);
+
+                
+                BeginNewAbility(hits);
                 
 
-                /*//player specific reset. otherwise space only hold one frame
-                if (!data.ai) {
+                //player specific reset. otherwise space only hold one frame
+                /*if (!data.ai) {
                     rt.shouldAttack = false;
                 }*/
             }
@@ -200,13 +297,23 @@ public class Character01 : MonoBehaviour
         }
     }
 
-    private void BeginNewAbility(int activeAbility, RaycastHit2D[] hits) {
-        //Debug.Log(name+ " "+hits.Length);
+    private void BeginNewAbility(RaycastHit2D[] hits) {
+        // pick ability based on current combo
+        if (rt.lastAbility != null) {
+            rt.activeAbility = data.GetAbilityByName(
+                data.abilityTree.GetTagOfNextAbility(rt.lastAbility));
+        }
+
+        // note: currently combat actions support 1 ability activation per target.
+        rt.lastAbility = data.abilities[rt.activeAbility];
+        Debug.Log("Attacking with ability: " + rt.lastAbility.Last.Value.abilityName+" "+rt.lastAbility.Last.Value.abilityTag + " " + hits.Length);
         for (int i = 0; i < hits.Length; i++) {
             if (hits[i].transform.root != transform.root) { // rebuild combat adding pipeline
                 Character01 target = hits[i].transform.GetComponent<Character01>();
-                // maybe 1 step too much?
-                rt.RecordAbility(this, data.abilities[activeAbility], new CombatAction(CombatActionId.DamageAttempt_CastCollision, this, target, activeAbility, Vector3.zero));
+
+                rt.RecordAbilityHit(this, data.abilities[rt.activeAbility], 
+                    new CombatAction(CombatActionId.DamageAttempt_CastCollision, this, 
+                    target, rt.activeAbility, Vector3.zero));
 
                 
             }
@@ -275,7 +382,7 @@ public class Character01 : MonoBehaviour
     }
     #region STATUSES
     public void Damaged(CombatAction a, int value) {
-        a.target.rt.msg = ("-" + value+" "+Time.time);
+        a.target.rt.combatUiMsg = ("-" + value+" "+Time.time);
         a.target.Damage(value);
     }
 

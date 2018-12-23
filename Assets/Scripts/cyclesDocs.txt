@@ -9,21 +9,29 @@ currenty you cannot kite enemies, because attacks happen towards where you are f
 suggestions: slow down enemies - slow ai attacking start. stunned when hit.
 
 
-Cycle 2 - experiment with abilities and ai. basic ui messaging.
+Cycle 2 - experiment with ability system and ai. basic ui messaging.
 stun. - ok
 archer ally. long range. insta shot. - ok
 ally dog. stun ability.
 more enemies.
 stun attribute for ability. stun on hit. player is stunned less.
-
 get basic ui messages out above units. text based.
+-ok all
 
-results: dog can tank everything, and it becomes boring to watch them diss it out in melee.
+results: dog can tank everything, and it becomes boring to watch them diss it out in melee. ui msgs would look
+better if they were spawned and slided down.
 
 (Cycle 2)ability system
 combat action is handled by combat processor.  <atm only damage and move> it's move, ability or whatever decision ai or user can make.
 where to handle cooldowns on abilities and where to handle ai delays? << locally.
 Solution 22.12.18: effects like stuns, animations, and waiting are handled locally. damage and movement are handled globally.
+
+Cycle 3 - include teamwork with allies mechanic. what about picking one ally to follow you.
+random dmg in range. larger hp value.
+pick ally/leave ally. 3 combo basic attack... space. ability 1. ability 2.
+basic ability 1: aoe spin - faster dmg. basic ability 2: drain heal
+dog: basic attack: double fast attack(double dmg). ability 1: short aoe bark-stun, no dmg. ability 2: dog jump perma stun 1 target. disengages when lost connection.
+archer: a1: slow cloud thrown on player. a2: aoe arrow shot.
 
 skopiraj certifikat na svoj strežnik na arnesu. konektaj prek passworda na učilnici.
 2.3 namesšanje certifikata - pretvorimo naš signet cert+

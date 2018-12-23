@@ -14,11 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   evt:
     abilityName: Multiple bites
+    abilityTag: Basic1
     avaliable: 1
     ability1_radius: 3
     ability1_dmg: 1
     rangeLimit: 0.75
     stun:
       stunLength: 3
+    condition:
+      priorRequiredAbilities:
+      - None
   stunId: 0
   childAction: {fileID: 0}

@@ -11,6 +11,6 @@ public class UnityData {
 
         combatMessages.text = 
             (data.isStunned > 0 ? "(Stunned)" : "") + 
-            data.msg;
+            data.combatUiMsg;
     }
 }

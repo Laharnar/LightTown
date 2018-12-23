@@ -69,6 +69,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2391812369390822567, guid: 5b792491bace22d47bd4ea668ddc7cb6,
         type: 3}
+      propertyPath: prefs.abilities.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2391812369390822567, guid: 5b792491bace22d47bd4ea668ddc7cb6,
+        type: 3}
       propertyPath: data.alliance
       value: 1
       objectReference: {fileID: 0}
@@ -90,6 +95,18 @@ PrefabInstance:
     - target: {fileID: 2391812369390822567, guid: 5b792491bace22d47bd4ea668ddc7cb6,
         type: 3}
       propertyPath: abilities.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 0c3dc24314350ee43acb36bbe0caa547,
+        type: 2}
+    - target: {fileID: 2391812369390822567, guid: 5b792491bace22d47bd4ea668ddc7cb6,
+        type: 3}
+      propertyPath: prefs.tree
+      value: 
+      objectReference: {fileID: 11400000, guid: 53c920f42b9c14a47b83cd7d2dc53113,
+        type: 2}
+    - target: {fileID: 2391812369390822567, guid: 5b792491bace22d47bd4ea668ddc7cb6,
+        type: 3}
+      propertyPath: prefs.abilities.Array.data[0]
       value: 
       objectReference: {fileID: 11400000, guid: 0c3dc24314350ee43acb36bbe0caa547,
         type: 2}

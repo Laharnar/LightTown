@@ -1,25 +1,28 @@
 ﻿using UnityEngine;
 
-public class Item : MonoBehaviour
+namespace Fantasy
 {
-    new public string name;
-    public int width; 
-    public int height;
-    public int maxStack;
-    public int stack;
-    public Sprite sprite;
-
-    private void Awake()
+    public class Item : MonoBehaviour
     {
-        base.name = name;
-    }
+        new public string name;
+        public int width;
+        public int height;
+        public int maxStack;
+        public int stack;
+        public Sprite sprite;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        Inventory inv = other.GetComponent<Inventory>();
-        if (inv != null)
+        private void Awake()
         {
-            inv.AddItem(this);
+            base.name = name;
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            InventoryPickupMessageReceiver inv = other.GetComponent<InventoryPickupMessageReceiver>();
+            if (inv != null)
+            {
+                inv.Notifiy(this);
+            }
         }
     }
 }

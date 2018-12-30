@@ -7,9 +7,17 @@ using UnityEngine;
 public enum CombatActionId {
     Damage,
     DamageAttempt_CastCollision,
-    DamageHostilesAttempt_CastCollision,
-    DamageHostiles,
     FixedUpdate_MoveByDirection
+}
+/// <summary>
+/// Which type of action is it. Used at processing.
+/// </summary>
+public enum TargetFilter {
+    Enemies,
+    Self,
+    AlliesOther,
+    AlliesAll,
+    All
 }
 /// <summary>
 /// Combat actions are constructed based on the whole chain.

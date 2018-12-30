@@ -10,24 +10,25 @@ public static class CombatProcessing {
             // Debug.Log("Possibility of applying dmg after collision " + e.source + " to " + e.target);
             e.evt = CombatActionId.Damage;
         }
-        if (e.evt == CombatActionId.DamageHostilesAttempt_CastCollision) {
-            // Debug.Log("Possibility of applying dmg after collision " + e.source + " to " + e.target);
-            e.evt = CombatActionId.DamageHostiles;
-        }
 
         // handle events
         if (e.evt == CombatActionId.Damage) {
-            if (e.target) {
-                Debug.Log("Applying dmg from " + e.source + " to " + e.target+" w amt "+activatedAbility.ability1_dmg);
-                e.target.Damaged(e, activatedAbility.ability1_dmg);
+            // Note: Doesn't support abilities to be applied without source, after death(buffs...).
+            if (PassFiltering(e.source.data.abilities[e.abilityId].Last.Value.targetFilter, e)) {
+                int dmg = activatedAbility.GetDmg();
+                Debug.Log("Applying dmg from " + e.source + " to " + e.target+" w amt "+ dmg);
+                e.target.Damaged(e, dmg);
             }
         }
-        if (e.evt == CombatActionId.DamageHostiles) {
-            if (e.target && e.source.data.alliance != e.target.data.alliance) {
-                Debug.Log("Applying dmg from " + e.source + " to " + e.target + " w amt " + activatedAbility.ability1_dmg);
-                e.target.Damaged(e, activatedAbility.ability1_dmg);
-            }
-        }
+    }
+
+    // todo: export combat filtering class.
+    public static bool PassFiltering(TargetFilter filter, CombatAction e) {
+        return (filter == TargetFilter.Enemies && e.target && e.source.data.alliance != e.target.data.alliance)
+            || (filter == TargetFilter.All)
+            || (filter == TargetFilter.AlliesAll && e.target && e.source.data.alliance == e.target.data.alliance)
+            || (filter == TargetFilter.AlliesOther && e.target && e.target != e.source && e.source.data.alliance == e.target.data.alliance)
+            || (filter == TargetFilter.Self && e.target && e.target == e.source);
     }
 
     internal static void ProcessPhysicsAction(CombatAction e) {

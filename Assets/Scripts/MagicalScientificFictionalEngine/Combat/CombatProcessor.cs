@@ -8,9 +8,10 @@ public class CombatProcessor:MonoBehaviour {
     Dictionary<Transform, IDecorator> fixUpdateActions = new Dictionary<Transform, IDecorator>();
 
     public void Add(IDecorator combatAction) {
-        actions.Enqueue(combatAction);
-    }
 
+        actions.Enqueue(combatAction);
+
+    }
     void Update() {
         // not used
 

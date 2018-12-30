@@ -27,11 +27,15 @@ where to handle cooldowns on abilities and where to handle ai delays? << locally
 Solution 22.12.18: effects like stuns, animations, and waiting are handled locally. damage and movement are handled globally.
 
 Cycle 3 - include teamwork with allies mechanic. what about picking one ally to follow you.
+need visuals.
 random dmg in range. larger hp value.
 pick ally/leave ally. 3 combo basic attack... space. ability 1. ability 2.
 basic ability 1: aoe spin - faster dmg. basic ability 2: drain heal
 dog: basic attack: double fast attack(double dmg). ability 1: short aoe bark-stun, no dmg. ability 2: dog jump perma stun 1 target. disengages when lost connection.
 archer: a1: slow cloud thrown on player. a2: aoe arrow shot.
+camera. ok
+
+TEST: if combos work on enemies.
 
 skopiraj certifikat na svoj strežnik na arnesu. konektaj prek passworda na učilnici.
 2.3 namesšanje certifikata - pretvorimo naš signet cert+

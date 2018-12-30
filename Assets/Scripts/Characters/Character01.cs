@@ -9,7 +9,11 @@ public class AbilityData {
     public string abilityTag = "UndefinedTag";
     public bool avaliable = true;
     public float ability1_radius = 1;
-    public int ability1_dmg = 1;
+    public int dmgMin = 1;
+    public int dmgMax = 1;
+
+    /// <remarks>Taken only for the last(base) item in chain.</remarks>
+    public TargetFilter targetFilter = TargetFilter.Enemies;
 
     public float rangeLimit=1;
     public Stun stun;
@@ -23,6 +27,10 @@ public class AbilityData {
     /// </summary>
     /// <remarks>Condition is take only for the last(base) item in chain.</remarks>
     public AbilityCondition condition;
+
+    internal int GetDmg() {
+        return UnityEngine.Random.Range(Mathf.Min(dmgMin, dmgMax), Mathf.Max(dmgMin, dmgMax)) ;
+    }
     
 }
 [System.Serializable]
@@ -30,7 +38,7 @@ public class AbilityComboItem {
     public string tag = "Undefined";
     public string[] next;
     public AbilityCondition[] conditions;
-    internal string Default { get { return next[0]; } }
+    internal string Default { get { if(next.Length == 0){ return tag; } return next[0]; } }
 
     public int NumOfPaths { get { return next.Length - 1; } }
 
@@ -178,72 +186,6 @@ public class Character01 : MonoBehaviour
 
         GameManager.instance.StartCoroutine(CharacterLimits());
     }
-
-    private void LoadAbilities() {
-        // load abilities into list
-        data.abilities = new LinkedList<AbilityData>[prefs.abilities.Count];
-        for (int i = 0; i < prefs.abilities.Count; i++) {
-            data.abilities[i] = DecoratorHolder.ConstructAbilityStack((DecoratorHolder)prefs.abilities[i]);//.evt
-        }
-    }
-
-    private void LoadTree() {
-        data.abilityTree = prefs.tree.tree;
-    }
-
-    // experimental 2 - cycle 2.
-    /// <summary>
-    /// Wait out single ability, over single target
-    /// </summary>
-    /// <param name="ability"></param>
-    /// <returns></returns>
-    public IEnumerator AbilityCycle(LinkedList<AbilityData> ability, CombatAction action) {
-        Debug.Log("running ability cycle." + action.source);
-        //Note: source is NOT necessarily this object, even if function is local.
-        //atm it is.
-        LinkedListNode<AbilityData> node = ability.First;
-        if (node != null) {
-            do {
-                if (node.Value.stun.stunLength > 0) {
-                    GameManager.instance.StartCoroutine(action.target.Stunned(action, node.Value.stun.stunLength));
-                }
-
-                //Damaged(action, node.Value.ability1_dmg);
-                GameManager.instance.combatProcessor.Add(action);
-                //yield return new WaitForSeconds(combatLimits.delayAfterAttacking);
-                // yield return StartCoroutine(CombatProcessing.ProcessAction());
-
-                node = node.Next;
-            } while (node != null);
-        }
-        yield return null;
-        rt.AbilityDone(this);
-    }
-
-
-    /// <summary>
-    /// handles delays between attacks
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator CharacterLimits() {
-        while (true) {
-            if (combatLimits.delayAfterAttacking > 0 && !combatLimits.ready) {
-                yield return new WaitForSeconds(combatLimits.delayAfterAttacking);
-                Debug.Log("ready to attack.");
-                // pick attack.
-                /*if (combatLimits.waitStun > 0) {
-                    Debug.Log("waiting stun ou t ");
-                    rt.isStunned ++;
-                    yield return new WaitForSeconds(combatLimits.waitStun);
-                    rt.isStunned --;
-                }*/
-                //combatLimits.waitStun = 0;
-                combatLimits.ready = true;
-
-            } 
-            else yield return null;
-        }
-    }
     private void FixedUpdate() {
         if (data.ai == false) {
             unity.rig.MovePosition((Vector2)transform.position + rt.move * data.moveSpeed * Time.fixedDeltaTime);
@@ -378,6 +320,74 @@ public class Character01 : MonoBehaviour
         if (rt.curHp < 0) {
             GameAI.DestroyUnit(this);
             Destroy(gameObject);
+        }
+    }
+
+    private void LoadAbilities() {
+        // load abilities into list
+        data.abilities = new LinkedList<AbilityData>[prefs.abilities.Count];
+        for (int i = 0; i < prefs.abilities.Count; i++) {
+            data.abilities[i] = DecoratorHolder.ConstructAbilityStack((DecoratorHolder)prefs.abilities[i]);//.evt
+        }
+    }
+
+    private void LoadTree() {
+        data.abilityTree = prefs.tree.tree;
+    }
+
+    // experimental 2 - cycle 2.
+    /// <summary>
+    /// Wait out single ability, over single target
+    /// </summary>
+    /// <param name="ability"></param>
+    /// <returns></returns>
+    public IEnumerator AbilityCycle(LinkedList<AbilityData> ability, CombatAction action) {
+        Debug.Log("running ability cycle." + action.source);
+        //Note: source is NOT necessarily this object, even if function is local.
+        //atm it is.
+        LinkedListNode<AbilityData> node = ability.First;
+        if (node != null) {
+            do {
+                // Filtering is limited to last ability's value.
+                if (CombatProcessing.PassFiltering(ability.Last.Value.targetFilter, action)) {
+                    if (node.Value.stun.stunLength > 0) {
+                        GameManager.instance.StartCoroutine(action.target.Stunned(action, node.Value.stun.stunLength));
+                    }
+                }
+
+
+                //Damaged(action, node.Value.ability1_dmg);
+                GameManager.instance.combatProcessor.Add(action);
+                //yield return new WaitForSeconds(combatLimits.delayAfterAttacking);
+                // yield return StartCoroutine(CombatProcessing.ProcessAction());
+                node = node.Next;
+            } while (node != null);
+        }
+        yield return null;
+        rt.AbilityDone(this);
+    }
+
+
+    /// <summary>
+    /// handles delays between attacks
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator CharacterLimits() {
+        while (true) {
+            if (combatLimits.delayAfterAttacking > 0 && !combatLimits.ready) {
+                yield return new WaitForSeconds(combatLimits.delayAfterAttacking);
+                Debug.Log("ready to attack.");
+                // pick attack.
+                /*if (combatLimits.waitStun > 0) {
+                    Debug.Log("waiting stun ou t ");
+                    rt.isStunned ++;
+                    yield return new WaitForSeconds(combatLimits.waitStun);
+                    rt.isStunned --;
+                }*/
+                //combatLimits.waitStun = 0;
+                combatLimits.ready = true;
+
+            } else yield return null;
         }
     }
     #region STATUSES

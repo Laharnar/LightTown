@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 
-public class PlayerInventoryControl : InventoryUIControl
+namespace Fantasy
 {
-    private void Update()
+    public class PlayerInventoryControl : InventoryUIControl
     {
-        if (Input.GetKeyDown(KeyCode.I))
+        private void Update()
         {
-            Visibility(!invUI.gameObject.activeSelf);
+            if (Input.GetKeyDown(KeyCode.I))
+            {
+                Visibility(!invUI.gameObject.activeSelf);
+            }
         }
-	}
+    }
 }

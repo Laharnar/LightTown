@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 /// <summary>
@@ -43,5 +44,29 @@ public class CombatAction : IDecorator {
         this.target = target;
         this.abilityId = abilityId;
         this.direction = direction;
+    }
+
+
+    public void Damaged(CombatAction a, int value) {
+        a.target.rt.combatUiMsg = ("-" + value + " " + Time.time);
+        a.target.Damage(value);
+    }
+
+    public IEnumerator Stunned(CombatAction a, float time) {
+        a.target.rt.isStunned++;
+        yield return new WaitForSeconds(time);
+        a.target.rt.isStunned--;
+    }
+    // TODO : untested
+    public IEnumerator Poisoned(CombatAction a, float stunLength, int value, float updateRate = 1) {
+        float sum = 0;
+        while (sum < stunLength) {
+            sum += updateRate;
+            if (sum < stunLength)
+                yield return new WaitForSeconds(updateRate);
+            else yield return new WaitForSeconds(sum % stunLength);
+
+            a.target.Damage(value);
+        }
     }
 }

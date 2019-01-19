@@ -28,7 +28,11 @@ Solution 22.12.18: effects like stuns, animations, and waiting are handled local
 
 Cycle 3 - include teamwork with allies mechanic. what about picking one ally to follow you.
 need visuals.
-random dmg in range. larger hp value.
+Activating animations - 
+1: in prefs
+2: in character... separaate library.
+random dmg in range. larger hp value. ok
+-- when close to ally, press space, they start following you. ok. attacking activated different attack.
 pick ally/leave ally. 3 combo basic attack... space. ability 1. ability 2.
 basic ability 1: aoe spin - faster dmg. basic ability 2: drain heal
 dog: basic attack: double fast attack(double dmg). ability 1: short aoe bark-stun, no dmg. ability 2: dog jump perma stun 1 target. disengages when lost connection.
@@ -62,4 +66,22 @@ detekcija robov. potem šive iskat, računanje kumulativ(vsota pi, katere črte 
 kumulative: prištej minimum v naslednji vrstici.
 
 import that sigenca certificat. then select mail.
+
+Ideje:
+collect army.
+pick closest ally to give you 1 ability
+pick closest ally to give you attacks.
+to assist you in battle. depending on their ai.
+the rest they just chill and be more defensive on the side
+(invisible sneaky assasin(dark templar slash). mage with huge channeling meteor.
+defensive shield templar. parry expert. fast rogue melee combatant)
+Allows you to personalize and diverse characters alot.
+
+Hacker theme: have ally symbols combine with you... could work well, visually. more like pickups tho...
+
+Enemies.
+cannon fodder. high reward targets(exp, gold). Basically have rewards in 1 clear place.
+
+
+
 

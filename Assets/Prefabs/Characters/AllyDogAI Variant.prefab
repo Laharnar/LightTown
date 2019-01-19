@@ -24,12 +24,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2963023733913414483, guid: f3034770145f23549965df452d64e55f,
         type: 3}
+      propertyPath: data.followAllyAbility
+      value: 
+      objectReference: {fileID: 11400000, guid: 58b007c951fedfe40af868a22b57491a,
+        type: 2}
+    - target: {fileID: 2963023733913414483, guid: f3034770145f23549965df452d64e55f,
+        type: 3}
       propertyPath: combatLimits.delayAfterAttacking
       value: 0.45
       objectReference: {fileID: 0}
     - target: {fileID: 2963023733913414483, guid: f3034770145f23549965df452d64e55f,
         type: 3}
-      propertyPath: abilities.Array.data[0]
+      propertyPath: prefs.abilities.Array.data[0]
       value: 
       objectReference: {fileID: 11400000, guid: 420e7681e2981f348bbd6dd9ce1f5039,
         type: 2}
@@ -38,12 +44,6 @@ PrefabInstance:
       propertyPath: prefs.tree
       value: 
       objectReference: {fileID: 11400000, guid: 53c920f42b9c14a47b83cd7d2dc53113,
-        type: 2}
-    - target: {fileID: 2963023733913414483, guid: f3034770145f23549965df452d64e55f,
-        type: 3}
-      propertyPath: prefs.abilities.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: 420e7681e2981f348bbd6dd9ce1f5039,
         type: 2}
     - target: {fileID: 2963023733913414482, guid: f3034770145f23549965df452d64e55f,
         type: 3}
@@ -114,6 +114,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 491999456827415309, guid: f3034770145f23549965df452d64e55f,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 800
+      objectReference: {fileID: 0}
+    - target: {fileID: 7582078157131545152, guid: f3034770145f23549965df452d64e55f,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.6062914
+      objectReference: {fileID: 0}
+    - target: {fileID: 7582078157131545152, guid: f3034770145f23549965df452d64e55f,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.605242
+      objectReference: {fileID: 0}
+    - target: {fileID: 7582078157131545152, guid: f3034770145f23549965df452d64e55f,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.6320754
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f3034770145f23549965df452d64e55f, type: 3}
